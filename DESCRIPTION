@@ -3,8 +3,9 @@ Title: Generate and evaluate questions
 Version: 0.0.0.9000
 Authors@R: person("Anselm", "Rothe", email = "anselm@nyu.edu", role = c("aut", "cre"))
 Description: Generate and evaluate questions for Battleship.
-Depends: R, testthat
+Depends: R
 License: MIT
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 5.0.1
+Suggests: testthat
