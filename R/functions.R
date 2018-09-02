@@ -13,12 +13,8 @@ normalizing <- function(x) {
 #' @references http://stackoverflow.com/a/21059868
 #' @export
 named_list <- function(...){
-  dots <- list(...)
-  inferred <- sapply(substitute(list(...)), function(x) deparse(x)[1])[-1]
-  if(is.null(names(inferred))){
-    names(dots) <- inferred
-  } else {
-    names(dots)[names(inferred) == ""] <- inferred[names(inferred) == ""]
-  }
-  dots
+  x <- list(...)
+  inferred <- sapply(substitute(list(...)), function(y) deparse(y)[1])[-1]
+  names(x) <- inferred
+  x
 }
