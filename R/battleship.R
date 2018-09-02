@@ -5,7 +5,7 @@ create_gameboards <- function(x) {
   ## TODO
 }
 
-create_battleship_variables <- function(save = FALSE) {
+create_battleship_variables <- function() {
   ROWS <- 1:6
   COLS <- 1:6
   df.coords <- tidyr::crossing(row = ROWS, col = COLS) %>% mutate(coords = sprintf('%s-%s', row, col))
@@ -16,17 +16,16 @@ create_battleship_variables <- function(save = FALSE) {
 
   ship_shapes <- tidyr::crossing(ship = 1:3, size = 2:4, orientation = c('horizontal', 'vertical'), topleft = COORDS)
 
-  if (save) {
-    # create_battleship_variables(save = TRUE)
-    devtools::use_data(ROWS, overwrite = TRUE)
-    devtools::use_data(COLS, overwrite = TRUE)
-    devtools::use_data(df.coords, overwrite = TRUE)
-    devtools::use_data(COORDS, overwrite = TRUE)
-    devtools::use_data(GRID, overwrite = TRUE)
-    devtools::use_data(neighbor_tiles, overwrite = TRUE)
-    devtools::use_data(touching_tiles, overwrite = TRUE)
-    devtools::use_data(ship_shapes, overwrite = TRUE)
-  }
+  ## run this only once
+  # devtools::use_data(ROWS, overwrite = TRUE)
+  # devtools::use_data(COLS, overwrite = TRUE)
+  # devtools::use_data(df.coords, overwrite = TRUE)
+  # devtools::use_data(COORDS, overwrite = TRUE)
+  # devtools::use_data(GRID, overwrite = TRUE)
+  # devtools::use_data(neighbor_tiles, overwrite = TRUE)
+  # devtools::use_data(touching_tiles, overwrite = TRUE)
+  # devtools::use_data(ship_shapes, overwrite = TRUE)
+
   named_list(ROWS,
              COLS,
              df.coords,
