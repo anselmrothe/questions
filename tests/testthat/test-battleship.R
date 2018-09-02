@@ -22,6 +22,10 @@ test_that('battleship variables exist', {
   ## alternative way to access variables
   expect_is(questions::ROWS, 'integer')
 
+  ## consistency between COORDS and GRID
+  expect_equal(COORDS[GRID[3,1]], '3-1')
+  expect_equal(COORDS[GRID[4,5]], '4-5')
+
   ## create battleship variables
   v <- create_battleship_variables()
   expect_equal(v$ROWS, ROWS)

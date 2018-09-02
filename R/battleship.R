@@ -8,7 +8,9 @@ create_gameboards <- function(x) {
 create_battleship_variables <- function() {
   ROWS <- 1:6
   COLS <- 1:6
-  df.coords <- tidyr::crossing(row = ROWS, col = COLS) %>% mutate(coords = sprintf('%s-%s', row, col))
+  df.coords <- tidyr::crossing(row = ROWS, col = COLS) %>%
+    arrange(col, row) %>%
+    mutate(coords = sprintf('%s-%s', row, col))
   COORDS <- df.coords$coords
   GRID <- matrix(1:36, ncol = 6, byrow = FALSE)  ## we go by column
   neighbor_tiles <- create_neighbor_tiles(GRID)
