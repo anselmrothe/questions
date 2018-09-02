@@ -4,6 +4,7 @@ test_that('battleship variables', {
   ## 'v' exists after running library(questions)
   expect_true(exists('v'))
   expect_is(v, 'list')
+  expect_is(questions::v, 'list')
   expect_named(v, c('ROWS', 'COLS', 'df.coords', 'COORDS', 'GRID',
                     'neighbor_tiles', 'ship_shapes'))
   expect_equal(v, create_battleship_variables())
