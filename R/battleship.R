@@ -16,7 +16,9 @@ create_battleship_variables <- function() {
   neighbor_tiles <- create_neighbor_tiles(GRID)
   touching_tiles <- create_touching_tiles(ROWS, COLS, GRID)
 
-  ship_shapes <- tidyr::crossing(ship = 1:3, size = 2:4, orientation = c('horizontal', 'vertical'))
+  SHIPS <- 1:3
+  SIZES <- 2:4
+  ORIENTATIONS <- c('horizontal', 'vertical')
 
   ## run this only once
   # devtools::use_data(ROWS, overwrite = TRUE)
@@ -26,7 +28,9 @@ create_battleship_variables <- function() {
   # devtools::use_data(GRID, overwrite = TRUE)
   # devtools::use_data(neighbor_tiles, overwrite = TRUE)
   # devtools::use_data(touching_tiles, overwrite = TRUE)
-  # devtools::use_data(ship_shapes, overwrite = TRUE)
+  # devtools::use_data(SHIPS, overwrite = TRUE)
+  # devtools::use_data(SIZES, overwrite = TRUE)
+  # devtools::use_data(ORIENTATIONS, overwrite = TRUE)
 
   named_list(ROWS,
              COLS,
@@ -35,7 +39,9 @@ create_battleship_variables <- function() {
              GRID,
              neighbor_tiles,
              touching_tiles,
-             ship_shapes)
+             SHIPS,
+             SIZES,
+             ORIENTATIONS)
 }
 
 create_neighbor_tiles <- function(GRID) {
