@@ -18,3 +18,9 @@ named_list <- function(...){
   names(x) <- inferred
   x
 }
+
+#' Make a list of data frame rows
+#' @export
+list_of_rows <- function(df) {
+  split(df, seq(nrow(df)))
+}

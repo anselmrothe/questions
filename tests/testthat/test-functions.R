@@ -12,3 +12,12 @@ test_that('named_list', {
   expect_equal(named_list(a), list(a = a))
   expect_equal(named_list(a, a), list(a = a, a = a))
 })
+
+test_that('list_of_rows', {
+  dd <- data_frame(x = c('a', 'b', 'c'))
+  expect_equal(list_of_rows(dd)[[1]], data_frame(x = 'a'))
+  expect_equal(list_of_rows(dd)[[2]], data_frame(x = 'b'))
+  expect_equal(list_of_rows(dd)[[3]], data_frame(x = 'c'))
+  expect_equal(list_of_rows(dd) %>% names, c('1', '2', '3'))
+  expect_equal(list_of_rows(dd) %>% lapply(function(i) 'xx') %>% names, c('1', '2', '3'))
+})
