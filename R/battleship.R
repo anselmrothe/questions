@@ -5,6 +5,30 @@ create_gameboards <- function(x) {
   ## TODO
 }
 
+boards_one_ship <- function(ship_label = 1) {
+  ## combinations of ship shapes and positions
+  ## filter out positions where ship extends beyond board size
+  board_setting <- crossing(ship = ship_label, size = SIZES, orientation = ORIENTATIONS, topleft_row = ROWS, topleft_col = COLS) %>%
+    mutate(bottomright_col = ifelse(orientation == 'horizontal', topleft_col + size - 1, topleft_col),
+           bottomright_row = ifelse(orientation == 'horizontal', topleft_row, topleft_row + size - 1),
+           valid = ifelse(bottomright_col > 6, FALSE, TRUE),
+           valid = ifelse(bottomright_row > 6, FALSE, valid)) %>%
+    filter(valid) %>%
+    arrange(size, desc(orientation), topleft_row, topleft_col)  ## ordering for compatibility with old code
+
+  ## board = game board = grid = conf = configuration
+  setting_to_board <- function(x) {
+    b <- matrix(numeric(36), ncol = 6) ## empty board
+    b[x$topleft_row:x$bottomright_row,
+      x$topleft_col:x$bottomright_col] <- ship_label
+    b
+  }
+  boards <- board_setting %>% list_of_rows %>% lapply(setting_to_board)
+
+  ## combine board_settings with list of boards
+  board_setting %>% mutate(board = boards)
+}
+
 create_battleship_variables <- function() {
   ROWS <- 1:6
   COLS <- 1:6

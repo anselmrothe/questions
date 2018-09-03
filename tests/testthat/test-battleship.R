@@ -1,5 +1,5 @@
 
-test_that('battleship variables exist', {
+test_that('battleship variables', {
   ## these global variables should exist after running 'library(questions)'
   expect_true(exists('ROWS'))
   expect_true(exists('COLS'))
@@ -38,3 +38,11 @@ test_that('battleship variables exist', {
   expect_equal(create_neighbor_tiles(GRID) %>% length, 36)
   expect_equal(create_touching_tiles(ROWS, COLS, GRID) %>% dim, c(60, 2))
 })
+
+test_that('battleship game boards', {
+  bos <- boards_one_ship()
+  expect_is(bos, 'data.frame')
+  expect_is(bos$board, 'list')
+  expect_is(bos$board[[1]], 'matrix')
+})
+
