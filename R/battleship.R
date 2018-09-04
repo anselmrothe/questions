@@ -16,7 +16,8 @@ boards_one_ship <- function(ship_label = 1) {
     filter(valid) %>%
     arrange(size, desc(orientation), topleft_row, topleft_col)  ## ordering for compatibility with old code
 
-  ## board = game board = grid = conf = configuration
+  ## paint ship labels into boards
+  ## board = game board = grid = conf = configuration = 6x6 matrix
   setting_to_board <- function(x) {
     b <- matrix(numeric(36), ncol = 6) ## empty board
     b[x$topleft_row:x$bottomright_row,
