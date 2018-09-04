@@ -9,6 +9,23 @@ normalizing <- function(x) {
   }
 }
 
+#' turn vector into single string
+#' (elements are separated by space)
+#' @export
+vec_chr <- function(x) paste(x, collapse = ' ')
+
+#' turn a string (of elements separated by space) into vector
+#' @export
+chr_vec <- function(x) stringr::str_split(x, ' ')[[1]]
+
+#' turn a string (of elements separated by space) into vector of integers
+#' @export
+chr_vec_int <- function(x) {
+  y <- suppressWarnings(purrr::map_int(chr_vec(x), as.integer))
+  if (any(is.na(y))) stop(sprintf('Non-integer in %s', x))
+  else y
+}
+
 #' list that automatically names its elements
 #' @references http://stackoverflow.com/a/21059868
 #' @export

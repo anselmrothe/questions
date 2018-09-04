@@ -7,6 +7,26 @@ test_that('normalizing', {
   expect_equal(normalizing(0), 0)
 })
 
+test_that('vec_chr', {
+  expect_equal(vec_chr(1), '1')
+  expect_equal(vec_chr(c(1, 2)), '1 2')
+  expect_equal(vec_chr(c('a', 'b')), 'a b')
+  expect_equal(vec_chr(c('a', 2)), 'a 2')
+})
+
+test_that('chr_vec', {
+  expect_equal(chr_vec('1'), '1')
+  expect_equal(chr_vec('1 2'), c('1', '2'))
+  expect_equal(chr_vec('a b'), c('a', 'b'))
+  expect_equal(chr_vec('a 2'), c('a', '2'))
+})
+
+test_that('chr_vec_int', {
+  expect_equal(chr_vec_int('1'), 1)
+  expect_equal(chr_vec_int('1 2'), 1:2)
+  expect_error(chr_vec_int('a b'))
+})
+
 test_that('named_list', {
   a <- 1
   expect_equal(named_list(a), list(a = a))
