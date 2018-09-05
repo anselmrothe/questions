@@ -1,4 +1,9 @@
 
+test_that('can run pblapply', {
+  expect_equal(c(1:10) %>% pbapply::pblapply(mean),
+               c(1:10) %>% lapply(mean))
+})
+
 test_that('battleship variables', {
   ## these global variables should exist after running 'library(questions)'
   expect_true(exists('ROWS'))
