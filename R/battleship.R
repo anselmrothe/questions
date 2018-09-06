@@ -107,3 +107,19 @@ create_touching_tiles <- function(COLS, ROWS, GRID) {
   }
   df
 }
+
+
+# format ------------------------------------------------------------------
+
+#' coordinate format
+#' @export
+coord <- function(row, col) sprintf('%s-%s', row, col)
+
+#' coordinate format
+#' @export
+coord_row <- function(coord) as.integer(stringr::str_split(coord, '-')[[1]][1])
+
+#' coordinate format
+#' @export
+coord_col <- function(coord) as.integer(stringr::str_split(coord, '-')[[1]][2])
+

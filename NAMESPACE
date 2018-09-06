@@ -2,6 +2,9 @@
 
 export(chr_vec)
 export(chr_vec_int)
+export(coord)
+export(coord_col)
+export(coord_row)
 export(create_gameboards)
 export(list_of_rows)
 export(named_list)

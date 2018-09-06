@@ -51,3 +51,8 @@ test_that('battleship game boards', {
   expect_is(bos$board[[1]], 'matrix')
 })
 
+test_that('coord', {
+  expect_equal(coord(1, 2), '1-2')
+  expect_equal(coord_row('1-2'), 1)
+  expect_equal(coord_col('1-2'), 2)
+})
