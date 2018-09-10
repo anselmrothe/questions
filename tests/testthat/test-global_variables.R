@@ -30,3 +30,9 @@ test_that('battleship.R', {
   expect_equal(dim(boards_arr), c(6, 6, N))
   expect_equal(nrow(boards), 3 * N)
 })
+
+test_that('boards2', {
+  ## agent_bayes.R
+  expect_is(boards2, 'data.frame')
+  expect_equal(nrow(boards2), N)
+})
