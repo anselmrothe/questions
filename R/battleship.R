@@ -1,7 +1,6 @@
 ### functions concerning the battleship game environment
 
 #' create the hypothesis space of 1.6 million game boards
-#' @export
 create_gameboards <- function(testing = FALSE) {
   bos1 <- boards_one_ship(ship_label = 1)
   bos2 <- boards_one_ship(ship_label = 2)
