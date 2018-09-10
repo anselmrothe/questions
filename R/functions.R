@@ -1,7 +1,7 @@
 
 #' normalize numbers such that they sum to 1
 #' @export
-normalizing <- function(x) {
+normalize <- function(x) {
   if (sum(x)==0) {
     return(x)
   } else {
