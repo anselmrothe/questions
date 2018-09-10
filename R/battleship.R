@@ -1,8 +1,64 @@
+### functions concerning the battleship game environment
 
 #' create the hypothesis space of 1.6 million game boards
 #' @export
-create_gameboards <- function(x) {
-  ## TODO
+create_gameboards <- function(testing = FALSE) {
+  bos1 <- boards_one_ship(ship_label = 1)
+  bos2 <- boards_one_ship(ship_label = 2)
+  bos3 <- boards_one_ship(ship_label = 3)
+
+  crs <- crossing(bos1, bos2, bos3)  ## 2.9M rows
+
+  if (testing) {
+    crs <- crs[1080:1100,]
+  }
+
+  ## convert to arrays for speedup
+  ## 70 sec
+  system.time({
+    f <- function(x) x %>% unlist %>% array(dim = c(6, 6, nrow(crs)))
+    arr1 <- crs$board %>% f
+    arr2 <- crs$board1 %>% f
+    arr3 <- crs$board2 %>% f
+  })
+  # arr1[,,1]
+
+  ## multiply arrays with each other to find overlaps
+  ## 30 sec
+  system.time({
+    f <- function(x) (x * 10 + 1)
+    arr <- (f(arr1) * f(arr2) * f(arr3) - 1) / 10
+    arr_overlap <- arr > 3  ## overlapping ships result in value > 3
+    overlap <- arr_overlap %>% apply(3, any)
+  })
+
+  boards_arr <-arr[,,!overlap]
+  valid_boards <- crs[!overlap,]
+
+
+  ## reshape infos for each ship
+  dd <- valid_boards %>% mutate(id = 1:nrow(valid_boards))
+  d1 <- dd %>% select(id, ship:coords)
+  d2 <- dd %>% select(id, ship1:coords1)
+  d3 <- dd %>% select(id, ship2:coords2)
+  colnames(d2) <- colnames(d1)
+  colnames(d3) <- colnames(d1)
+  ee <- bind_rows(d1, d2, d3) %>% arrange(id)
+
+  ## add 'topleft' and 'bottomright' coordinates
+  ## 10 sec
+  system.time({
+    boards <- ee %>%
+      mutate(topleft = coord(topleft_row, topleft_col),
+             bottomright = coord(bottomright_row, bottomright_col)) %>%
+      select(id, ship, size, orientation, topleft, bottomright, coords)
+  })
+
+  ## run this only once
+  # devtools::use_data(boards_arr, overwrite = TRUE, compress = 'gzip')
+  # devtools::use_data(boards, overwrite = TRUE, compress = 'gzip')
+
+  named_list(boards, boards_arr)
 }
 
 boards_one_ship <- function(ship_label = 1) {
@@ -14,7 +70,15 @@ boards_one_ship <- function(ship_label = 1) {
            valid = ifelse(bottomright_col > 6, FALSE, TRUE),
            valid = ifelse(bottomright_row > 6, FALSE, valid)) %>%
     filter(valid) %>%
-    arrange(size, desc(orientation), topleft_row, topleft_col)  ## ordering for compatibility with old code
+    select(-valid) %>%
+    arrange(desc(orientation), size, topleft_row, topleft_col)  ## ordering for compatibility with old code
+
+  ## add coordinates
+  board_setting <- board_setting %>%
+    rowwise %>%
+    mutate(coords = COORDS[GRID[topleft_row:bottomright_row,
+                                topleft_col:bottomright_col]] %>% vec_chr) %>%
+    ungroup
 
   ## paint ship labels into boards
   ## board = game board = grid = conf = configuration = 6x6 matrix
@@ -113,7 +177,7 @@ create_touching_tiles <- function(COLS, ROWS, GRID) {
 
 #' coordinate format
 #' @export
-coord <- function(row, col) sprintf('%s-%s', row, col)
+coord <- function(row, col) stringr::str_c(row, col, sep = '-')
 
 #' coordinate format
 #' @export

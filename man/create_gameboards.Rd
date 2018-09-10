@@ -4,7 +4,7 @@
 \alias{create_gameboards}
 \title{create the hypothesis space of 1.6 million game boards}
 \usage{
-create_gameboards(x)
+create_gameboards(testing = FALSE)
 }
 \description{
 create the hypothesis space of 1.6 million game boards
