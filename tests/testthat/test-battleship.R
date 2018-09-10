@@ -26,6 +26,7 @@ test_that('battleship variables', {
   expect_is(ORIENTATIONS, 'character')
   expect_is(boards, 'data.frame')
   expect_is(boards_arr, 'array')
+  expect_is(N, 'integer')
 
   ## alternative way to access variables
   expect_is(questions::ROWS, 'integer')
@@ -35,8 +36,9 @@ test_that('battleship variables', {
   expect_equal(COORDS[GRID[4,5]], '4-5')
 
   ## double check game boards
-  expect_equal(dim(boards_arr), c(6, 6, 1653456))
-  expect_equal(nrow(boards), 3 * 1653456)
+  expect_equal(N, 1653456)
+  expect_equal(dim(boards_arr), c(6, 6, N))
+  expect_equal(nrow(boards), 3 * N)
 })
 
 test_that('create battleship variables', {
@@ -63,7 +65,7 @@ test_that('battleship game boards', {
   expect_is(bos$board[[1]], 'matrix')
 
   gb <- create_gameboards(testing = TRUE)
-  expect_named(gb, c('boards', 'boards_arr'))
+  expect_named(gb, c('boards', 'boards_arr', 'N'))
   expect_is(gb$boards, 'data.frame')
   expect_is(gb$boards_arr, 'array')
   # j <- 1

@@ -54,11 +54,14 @@ create_gameboards <- function(testing = FALSE) {
       select(id, ship, size, orientation, topleft, bottomright, coords)
   })
 
+  N <- dim(boards_arr)[3]
+
   ## run this only once
   # devtools::use_data(boards_arr, overwrite = TRUE, compress = 'gzip')
   # devtools::use_data(boards, overwrite = TRUE, compress = 'gzip')
+  # devtools::use_data(N, overwrite = TRUE)
 
-  named_list(boards, boards_arr)
+  named_list(boards, boards_arr, N)
 }
 
 boards_one_ship <- function(ship_label = 1) {
