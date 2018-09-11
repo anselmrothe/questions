@@ -37,21 +37,12 @@ create_gameboards <- function(testing = FALSE) {
 
   ## reshape infos for each ship
   dd <- valid_boards %>% mutate(id = 1:nrow(valid_boards))
-  d1 <- dd %>% select(id, ship:coords)
-  d2 <- dd %>% select(id, ship1:coords1)
-  d3 <- dd %>% select(id, ship2:coords2)
+  d1 <- dd %>% select(id, ship:neighbors)
+  d2 <- dd %>% select(id, ship1:neighbors1)
+  d3 <- dd %>% select(id, ship2:neighbors2)
   colnames(d2) <- colnames(d1)
   colnames(d3) <- colnames(d1)
-  ee <- bind_rows(d1, d2, d3) %>% arrange(id)
-
-  ## add 'topleft' and 'bottomright' coordinates
-  ## 10 sec
-  system.time({
-    boards <- ee %>%
-      mutate(topleft = coord(topleft_row, topleft_col),
-             bottomright = coord(bottomright_row, bottomright_col)) %>%
-      select(id, ship, size, orientation, topleft, bottomright, coords)
-  })
+  boards <- bind_rows(d1, d2, d3) %>% arrange(id)
 
   N <- dim(boards_arr)[3]
 
@@ -79,7 +70,10 @@ boards_one_ship <- function(ship_label = 1) {
   board_setting <- board_setting %>%
     rowwise %>%
     mutate(coords = COORDS[GRID[topleft_row:bottomright_row,
-                                topleft_col:bottomright_col]] %>% vec_chr) %>%
+                                topleft_col:bottomright_col]] %>% vec_chr,
+           topleft = coord(topleft_row, topleft_col),
+           bottomright = coord(bottomright_row, bottomright_col),
+           neighbors = compute_neighbors_chr(coords)) %>%
     ungroup
 
   ## paint ship labels into boards

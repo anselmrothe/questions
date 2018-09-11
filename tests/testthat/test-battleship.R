@@ -31,6 +31,7 @@ test_that('battleship game boards', {
   expect_is(bos, 'data.frame')
   expect_is(bos$board, 'list')
   expect_is(bos$board[[1]], 'matrix')
+  expect_is(bos$neighbors, 'character')
 
   gb <- create_gameboards(testing = TRUE)
   expect_named(gb, c('boards', 'boards_arr', 'N'))
