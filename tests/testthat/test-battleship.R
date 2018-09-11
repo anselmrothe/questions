@@ -22,7 +22,7 @@ test_that('create battleship variables', {
   expect_equal(v$SIZES, SIZES)
   expect_equal(v$ORIENTATIONS, ORIENTATIONS)
 
-  expect_equal(create_neighbor_tiles(GRID) %>% length, 36)
+  expect_equal(create_neighbor_tiles(GRID, COORDS) %>% length, 36)
   expect_equal(create_touching_tiles(ROWS, COLS, GRID) %>% dim, c(60, 2))
 })
 

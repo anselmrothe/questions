@@ -25,6 +25,9 @@ test_that('battleship.R', {
   expect_equal(COORDS[GRID[3,1]], '3-1')
   expect_equal(COORDS[GRID[4,5]], '4-5')
 
+  ## neighbor_tiles has names
+  expect_named(neighbor_tiles, COORDS)
+
   ## double check game boards
   expect_equal(N, 1653456)
   expect_equal(dim(boards_arr), c(6, 6, N))

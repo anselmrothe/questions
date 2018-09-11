@@ -104,7 +104,7 @@ create_battleship_variables <- function() {
     mutate(coords = sprintf('%s-%s', row, col))
   COORDS <- df.coords$coords
   GRID <- matrix(1:36, ncol = 6, byrow = FALSE)  ## we go by column
-  neighbor_tiles <- create_neighbor_tiles(GRID)
+  neighbor_tiles <- create_neighbor_tiles(GRID, COORDS)
   touching_tiles <- create_touching_tiles(ROWS, COLS, GRID)
 
   SHIPS <- 1:3
@@ -135,7 +135,7 @@ create_battleship_variables <- function() {
              ORIENTATIONS)
 }
 
-create_neighbor_tiles <- function(GRID) {
+create_neighbor_tiles <- function(GRID, COORDS) {
   neighbors <- data_frame(tile = 1:36) %>%
     mutate(top=   tile-1,
            bottom=tile+1,
@@ -152,7 +152,9 @@ create_neighbor_tiles <- function(GRID) {
     x <- neighbors[tile,] %>% select(top, right, bottom, left) %>% unlist %>% unname
     x[!is.na(x)]
   }
-  neighbors$tile %>% lapply(f)
+  y <- neighbors$tile %>% lapply(f)
+  names(y) <- COORDS
+  y
 }
 
 create_touching_tiles <- function(COLS, ROWS, GRID) {
