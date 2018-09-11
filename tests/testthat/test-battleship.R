@@ -49,6 +49,11 @@ test_that('battleship game boards', {
   expect_equal(gb$boards_arr[,,1], boards_arr[,,637])
 })
 
+test_that('compute_neighbors_chr', {
+  expect_equal(compute_neighbors_chr('1-1'), '2-1 1-2')
+  expect_equal(compute_neighbors_chr('1-1 6-6'), '2-1 1-2 6-5 5-6')
+})
+
 test_that('coord', {
   expect_equal(coord(1, 2), '1-2')
   expect_equal(coord(1:2, 6:7), c('1-6', '2-7'))

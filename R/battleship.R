@@ -176,6 +176,11 @@ create_touching_tiles <- function(COLS, ROWS, GRID) {
   df
 }
 
+compute_neighbors_chr <- function(coords_chr) {
+  f <- function(key, object) getElement(object, key)
+  x <- coords_chr %>% chr_vec %>% lapply(f, neighbor_tiles) %>% unlist %>% unique %>% sort
+  COORDS[x] %>% vec_chr
+}
 
 # format ------------------------------------------------------------------
 
