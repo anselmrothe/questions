@@ -8,3 +8,6 @@ q.horizontal <- function(h, ship) {
   key <- vec_chr(c('q.horizontal', ship))
   getElement(answers, key)[h]
 }
+q.location <- function(h, row, col) {
+  boards_arr[row,col,h]
+}
