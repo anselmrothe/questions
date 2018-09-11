@@ -44,15 +44,15 @@ prior_uniform_ship_sizes <- function(testing = FALSE) {
 
   ##  compute prior
   dd <- boards %>%
-      group_by(ship, size) %>%
-      mutate(flat = 1,
-             x = 1/ n()) %>%
-      ungroup %>%
-      mutate(flat = normalize(flat),
-             x = normalize(x)) %>%
-      group_by(id) %>%
-      mutate(flat = sum(flat),
-             x = sum(x))
+    group_by(ship, size) %>%
+    mutate(flat = 1,
+           x = 1 / n()) %>%
+    ungroup %>%
+    mutate(flat = normalize(flat),
+           x = normalize(x)) %>%
+    group_by(id) %>%
+    mutate(flat = sum(flat),
+           x = sum(x))
 
   # dd$flat %>% table
   # dd$x %>% table
