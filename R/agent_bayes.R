@@ -78,3 +78,13 @@ prior_uniform_ship_sizes <- function(testing = FALSE) {
 
   boards2
 }
+
+boards_subset <- function(ids) {
+  boards <- boards %>% filter(id %in% ids)
+  boards_arr <- boards_arr[,,ids]
+  boards2 <- boards2 %>% filter(id %in% ids) %>%
+    mutate(uniform_prior = normalize(uniform_prior),
+           uniform_shipsizes_prior = normalize(uniform_shipsizes_prior))
+  N <- length(ids)
+  named_list(boards, boards_arr, boards2, N)
+}
