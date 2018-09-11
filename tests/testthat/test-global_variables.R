@@ -36,3 +36,9 @@ test_that('boards2', {
   expect_is(boards2, 'data.frame')
   expect_equal(nrow(boards2), N)
 })
+
+test_that('answers', {
+  ## answers.R
+  expect_is(answers, 'data.frame')
+  expect_equal(nrow(answers), N)
+})
