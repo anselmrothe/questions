@@ -7,6 +7,7 @@ compute_answers_lookup_table <- function(testing = FALSE) {
     test_ids <- 1:10
     answers <- data_frame(id = test_ids)
     boards <- boards %>% filter(id %in% test_ids)
+    boards_arr <- boards_arr[,,test_ids]
   }
 
   type <- 'q.shipsize'
@@ -42,10 +43,19 @@ compute_answers_lookup_table <- function(testing = FALSE) {
     }
   })
 
-  type <- 'q.shiptiles'
-  for (shipx in 1:3) {
-    key <-  vec_chr(c(type, shipx))
-    answ <- filter(boards, ship == shipx)$coords
+  type <- 'q.tiles'
+  color <- 0
+  key <-  vec_chr(c(type, color))
+  ## 30 sec
+  system.time({
+    f <- function(board) vec_chr(COORDS[board == color])
+    answ <- boards_arr %>% apply(3, f)
+  })
+  stopifnot(length(answ) == nrow(answers))
+  answers[,key] <- answ
+  for (color in 1:3) {
+    key <-  vec_chr(c(type, color))
+    answ <- filter(boards, ship == color)$coords
     stopifnot(length(answ) == nrow(answers))
     answers[,key] <- answ
   }

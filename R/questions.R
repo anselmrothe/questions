@@ -1,3 +1,6 @@
+## these question functions are all we need to let question programs to lookup
+## information from the battleship boards
+
 ## these question functions are vectorized over h
 
 q.shipsize <- function(h, ship) {
@@ -15,7 +18,7 @@ q.touching <- function(h, ship1, ship2) {
   key <- vec_chr(c('q.touching', ship1, ship2))
   getElement(answers, key)[h]
 }
-q.shiptiles <- function(h, ship) {
-  key <- vec_chr(c('q.shiptiles', ship))
+q.tiles <- function(h, color) {
+  key <- vec_chr(c('q.tiles', color))
   getElement(answers, key)[h]
 }
