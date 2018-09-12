@@ -11,3 +11,7 @@ q.horizontal <- function(h, ship) {
 q.location <- function(h, row, col) {
   boards_arr[row,col,h]
 }
+q.touching <- function(h, ship1, ship2) {
+  key <- vec_chr(c('q.touching', ship1, ship2))
+  getElement(answers, key)[h]
+}
