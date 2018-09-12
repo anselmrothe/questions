@@ -42,6 +42,14 @@ compute_answers_lookup_table <- function(testing = FALSE) {
     }
   })
 
+  type <- 'q.shiptiles'
+  for (shipx in 1:3) {
+    key <-  vec_chr(c(type, shipx))
+    answ <- filter(boards, ship == shipx)$coords
+    stopifnot(length(answ) == nrow(answers))
+    answers[,key] <- answ
+  }
+
   # devtools::use_data(answers, overwrite = TRUE, compress = 'gzip')
 
   answers
