@@ -1,29 +1,29 @@
 ## these global variables should exist after running 'library(questions)'
 
 test_that('battleship.R', {
-  expect_true(exists('ROWS'))
-  expect_true(exists('COLS'))
+  expect_true(exists('NROWS'))
 
-  expect_is(ROWS, 'integer')
-  expect_is(COLS, 'integer')
+  expect_is(NROWS, 'numeric')
+  expect_is(NCOLS, 'numeric')
   expect_is(df.coords, 'data.frame')
   expect_is(COORDS, 'character')
+  expect_is(ROWS, 'matrix')
+  expect_is(COLS, 'matrix')
   expect_is(GRID, 'matrix')
   expect_is(neighbor_tiles, 'list')
   expect_is(touching_tiles, 'data.frame')
   expect_is(SHIPS, 'integer')
   expect_is(SIZES, 'integer')
-  expect_is(ORIENTATIONS, 'character')
   expect_is(boards, 'data.frame')
   expect_is(boards_arr, 'array')
   expect_is(N, 'integer')
 
   ## alternative way to access variables
-  expect_is(questions::ROWS, 'integer')
+  expect_is(questions::NROWS, 'numeric')
 
   ## consistency between COORDS and GRID
-  expect_equal(COORDS[GRID[3,1]], '3-1')
-  expect_equal(COORDS[GRID[4,5]], '4-5')
+  expect_equal(COORDS[GRID[3,1]], '3A')
+  expect_equal(COORDS[GRID[4,6]], '4F')
 
   ## neighbor_tiles has names
   expect_named(neighbor_tiles, COORDS)

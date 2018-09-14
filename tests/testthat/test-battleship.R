@@ -11,19 +11,20 @@ test_that('can run pbmclapply', {
 
 test_that('create battleship variables', {
   v <- create_battleship_variables()
-  expect_equal(v$ROWS, ROWS)
-  expect_equal(v$COLS, COLS)
+  expect_equal(v$NROWS, NROWS)
+  expect_equal(v$NCOLS, NCOLS)
   expect_equal(v$df.coords, df.coords)
   expect_equal(v$COORDS, COORDS)
+  expect_equal(v$ROWS, ROWS)
+  expect_equal(v$COLS, COLS)
   expect_equal(v$GRID, GRID)
   expect_equal(v$neighbor_tiles, neighbor_tiles)
   expect_equal(v$touching_tiles, touching_tiles)
   expect_equal(v$SHIPS, SHIPS)
   expect_equal(v$SIZES, SIZES)
-  expect_equal(v$ORIENTATIONS, ORIENTATIONS)
 
   expect_equal(create_neighbor_tiles(GRID, COORDS) %>% length, 36)
-  expect_equal(create_touching_tiles(ROWS, COLS, GRID) %>% dim, c(60, 2))
+  expect_equal(create_touching_tiles(GRID) %>% dim, c(60, 2))
 })
 
 test_that('battleship game boards', {
@@ -51,13 +52,13 @@ test_that('battleship game boards', {
 })
 
 test_that('compute_neighbors_chr', {
-  expect_equal(compute_neighbors_chr('1-1'), '2-1 1-2')
-  expect_equal(compute_neighbors_chr('1-1 6-6'), '2-1 1-2 6-5 5-6')
+  expect_equal(compute_neighbors_chr('1A'), '2A 1B')
+  expect_equal(compute_neighbors_chr('1A 6F'), '2A 1B 6E 5F')
 })
 
 test_that('coord', {
-  expect_equal(coord(1, 2), '1-2')
-  expect_equal(coord(1:2, 6:7), c('1-6', '2-7'))
-  expect_equal(coord_row('1-2'), 1)
-  expect_equal(coord_col('1-2'), 2)
+  expect_equal(coord(1, 2), '1B')
+  expect_equal(coord(1:2, 5:6), c('1E', '2F'))
+  expect_equal(coord_row('1B'), 1)
+  expect_equal(coord_col('1B'), 2)
 })

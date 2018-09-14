@@ -57,14 +57,14 @@ create_gameboards <- function(testing = FALSE) {
 boards_one_ship <- function(ship_label = 1) {
   ## combinations of ship shapes and positions
   ## filter out positions where ship extends beyond board size
-  board_setting <- crossing(ship = ship_label, size = SIZES, orientation = ORIENTATIONS, topleft_row = ROWS, topleft_col = COLS) %>%
-    mutate(bottomright_col = ifelse(orientation == 'horizontal', topleft_col + size - 1, topleft_col),
-           bottomright_row = ifelse(orientation == 'horizontal', topleft_row, topleft_row + size - 1),
+  board_setting <- crossing(ship = ship_label, size = SIZES, horizontal = 0:1, topleft_row = 1:6, topleft_col = 1:6) %>%
+    mutate(bottomright_col = ifelse(horizontal == 1, topleft_col + size - 1, topleft_col),
+           bottomright_row = ifelse(horizontal == 1, topleft_row, topleft_row + size - 1),
            valid = ifelse(bottomright_col > 6, FALSE, TRUE),
            valid = ifelse(bottomright_row > 6, FALSE, valid)) %>%
     filter(valid) %>%
     select(-valid) %>%
-    arrange(desc(orientation), size, topleft_row, topleft_col)  ## ordering for compatibility with old code
+    arrange(horizontal, size, topleft_row, topleft_col)  ## ordering for compatibility with old code
 
   ## add coordinates
   board_setting <- board_setting %>%
@@ -91,42 +91,45 @@ boards_one_ship <- function(ship_label = 1) {
 }
 
 create_battleship_variables <- function() {
-  ROWS <- 1:6
-  COLS <- 1:6
-  df.coords <- tidyr::crossing(row = ROWS, col = COLS) %>%
+  NROWS <- 6
+  NCOLS <- 6
+  df.coords <- tidyr::crossing(row = 1:NROWS, col = 1:NCOLS) %>%
     arrange(col, row) %>%
-    mutate(coords = sprintf('%s-%s', row, col))
+    mutate(coords = coord(row, col))
   COORDS <- df.coords$coords
-  GRID <- matrix(1:36, ncol = 6, byrow = FALSE)  ## we go by column
+  ROWS <- matrix(df.coords$row, ncol = NCOLS, byrow = FALSE)  ## we go by column
+  COLS <- matrix(df.coords$col, ncol = NCOLS, byrow = FALSE)  ## we go by column
+  GRID <- matrix(1:36, ncol = NCOLS, byrow = FALSE)  ## we go by column
   neighbor_tiles <- create_neighbor_tiles(GRID, COORDS)
-  touching_tiles <- create_touching_tiles(ROWS, COLS, GRID)
+  touching_tiles <- create_touching_tiles(GRID)
 
   SHIPS <- 1:3
   SIZES <- 2:4
-  ORIENTATIONS <- c('horizontal', 'vertical')
 
-  ## run this only once
-  # devtools::use_data(ROWS, overwrite = TRUE)
-  # devtools::use_data(COLS, overwrite = TRUE)
+  # # run this only once
+  # devtools::use_data(NROWS, overwrite = TRUE)
+  # devtools::use_data(NCOLS, overwrite = TRUE)
   # devtools::use_data(df.coords, overwrite = TRUE)
   # devtools::use_data(COORDS, overwrite = TRUE)
+  # devtools::use_data(ROWS, overwrite = TRUE)
+  # devtools::use_data(COLS, overwrite = TRUE)
   # devtools::use_data(GRID, overwrite = TRUE)
   # devtools::use_data(neighbor_tiles, overwrite = TRUE)
   # devtools::use_data(touching_tiles, overwrite = TRUE)
   # devtools::use_data(SHIPS, overwrite = TRUE)
   # devtools::use_data(SIZES, overwrite = TRUE)
-  # devtools::use_data(ORIENTATIONS, overwrite = TRUE)
 
-  named_list(ROWS,
-             COLS,
+  named_list(NROWS,
+             NCOLS,
              df.coords,
              COORDS,
+             ROWS,
+             COLS,
              GRID,
              neighbor_tiles,
              touching_tiles,
              SHIPS,
-             SIZES,
-             ORIENTATIONS)
+             SIZES)
 }
 
 create_neighbor_tiles <- function(GRID, COORDS) {
@@ -151,17 +154,17 @@ create_neighbor_tiles <- function(GRID, COORDS) {
   y
 }
 
-create_touching_tiles <- function(COLS, ROWS, GRID) {
+create_touching_tiles <- function(GRID) {
   df <- data.frame(i = 0, j = 0)[-1,]
-  for (col in COLS) {
-    for (row in ROWS[-length(ROWS)]) {
+  for (col in 1:6) {
+    for (row in 1:5) {
       i <- GRID[row,col]
       j <- GRID[row+1,col]
       df <- rbind(df, data_frame(i, j))
     }
   }
-  for (row in ROWS) {
-    for (col in COLS[-length(COLS)]) {
+  for (row in 1:6) {
+    for (col in 1:5) {
       i <- GRID[row,col]
       j <- GRID[row,col+1]
       df <- rbind(df, data_frame(i, j))
@@ -180,13 +183,12 @@ compute_neighbors_chr <- function(coords_chr) {
 
 #' coordinate format
 #' @export
-coord <- function(row, col) stringr::str_c(row, col, sep = '-')
+coord <- function(row, col) paste0(row, LETTERS[col])
 
 #' coordinate format
 #' @export
-coord_row <- function(coord) as.integer(stringr::str_split(coord, '-')[[1]][1])
+coord_row <- function(coord) as.integer(substr(coord, 1, 1))
 
 #' coordinate format
 #' @export
-coord_col <- function(coord) as.integer(stringr::str_split(coord, '-')[[1]][2])
-
+coord_col <- function(coord) as.integer(which(LETTERS == substr(coord, 2, 2)))
