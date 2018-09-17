@@ -16,3 +16,17 @@ test_that('question functions', {
   expect_equal(q.touching(h, 1, 2), c(1, 1))
   expect_equal(q.tiles(h, 1), c('1-1 2-1', '1-2 2-2'))
 })
+
+test_that('question variables', {
+  expect_equal(question_var_num('1'), 1)
+  expect_error(question_var_num('A'), 'Could not recode A to a number')
+  expect_equal(question_var_num('2B'), 8)
+  expect_equal(question_var_num('Water'), 0)
+
+  expect_equal(question_var_chr(1, 'boolean'), 'True')
+  expect_equal(question_var_chr(3, 'location'), '3A')
+  expect_equal(question_var_chr(3, 'color'), 'Purple')
+  expect_equal(question_var_chr(1, 'orientation'), 'Horizontal')
+  expect_error(question_var_chr(3, 'orientation'), "Could not recode '3' to type 'orientation'")
+  expect_error(question_var_chr(99, 'location'), "Could not recode '99' to type 'location'")
+})
