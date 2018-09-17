@@ -21,7 +21,7 @@ compute_answers_lookup_table <- function(testing = FALSE) {
   type <- 'q.horizontal'
   for (shipx in 1:3) {
     key <-  vec_chr(c(type, shipx))
-    answ <- (filter(boards, ship == shipx)$orientation == 'horizontal') * 1
+    answ <- filter(boards, ship == shipx)$horizontal
     stopifnot(length(answ) == nrow(answers))
     answers[,key] <- answ
   }
