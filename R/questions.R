@@ -26,6 +26,8 @@ q.tiles <- function(h, color) {
 
 ## question formatting
 
+## question variables are handled internally as numbers
+
 ## convert variable from character string to number
 question_var_num <- function(x) {
   if(x == "True")              y <- 1
