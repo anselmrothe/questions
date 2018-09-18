@@ -5,6 +5,10 @@ sudo: false
 cache: packages
 warnings_are_errors: false
 
+branches:
+  only:
+    - master
+
 r_github_packages:
   - r-lib/covr
 
