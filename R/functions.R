@@ -41,3 +41,9 @@ named_list <- function(...){
 list_of_rows <- function(df) {
   split(df, seq(nrow(df)))
 }
+
+#' Turn text into a data_frame
+#' @export
+text_to_data_frame <- function(text) {
+  as_data_frame(read.table(header = TRUE, stringsAsFactors = FALSE, text = text))
+}

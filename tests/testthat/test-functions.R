@@ -41,3 +41,11 @@ test_that('list_of_rows', {
   expect_equal(list_of_rows(dd) %>% names, c('1', '2', '3'))
   expect_equal(list_of_rows(dd) %>% lapply(function(i) 'xx') %>% names, c('1', '2', '3'))
 })
+
+test_that('text_to_data_frame', {
+  text <- '
+  a     b
+  first second'
+  expect_equal(text_to_data_frame(text),
+               data_frame(a = 'first', b = 'second'))
+})
