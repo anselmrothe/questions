@@ -1,5 +1,9 @@
 test_that('grammar', {
-  expect_equal(func_arg_to_expr('const'), '(const)')
-  expect_equal(func_arg_to_expr('size', 'Blue'), '(size Blue)')
-  expect_equal(func_arg_to_expr('sum', '1', '2'), '(sum 1 2)')
+  expect_equal(create_rewrite_rule('A -> B'), data_frame(left = 'A', right = 'B'))
+  expect_equal(create_rewrite_rules('
+   A -> B
+   A -> C'), data_frame(left = c('A', 'A'), right = c('B', 'C')))
+
+  cg <- create_grammar()
+  expect_named(cg, c("nonterminals", "terminals", "rewrite_rules", "start_symbol"))
 })

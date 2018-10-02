@@ -1,8 +1,8 @@
 e <- function(){
-  q.shiptiles(1:50, 1)
+  sprintf('Non-integer in %s', x)
 }
 f <- function(){
-  q.shiptiles2(1:50, 1)
+  glue('Non-integer in {x}')
 }
 g <- function(){
 }
