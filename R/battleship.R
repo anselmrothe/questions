@@ -46,6 +46,9 @@ create_gameboards <- function(testing = FALSE) {
 
   N <- dim(boards_arr)[3]
 
+  ## check there are no duplicates
+  stopifnot((boards %>% group_by(id) %>% summarize(coords = paste(coords, collapse = ' ')) %>% unique %>% nrow) == N)
+
   ## run this only once
   # devtools::use_data(boards_arr, overwrite = TRUE, compress = 'gzip')
   # devtools::use_data(boards, overwrite = TRUE, compress = 'gzip')
